@@ -2,57 +2,92 @@
 #https://www.w3schools.com/python/python_try_except.asp
 
 
-def sum(arr : list) -> int:
-    """
-    Modify the function such that it returns the sum of all numebrs within the given list.
-    :param arr:
-    :return:
-    """
-    pass
+def sum(arr: list) -> int:
+    x = 0
+    i = 0
 
-def cleanData(rawData : list) ->list:
-    """
-    modify the function such that it takes in a list as an argument will return a new list that
-     contains only the valeus that can be typecast to a float.
-    :param rawData:
-    :return:
-    """
-    pass
-def unreliableCalculator(divisors : list) -> list:
-    """
-    Modify the function such that it takes in a list as an argument and returns a new list where each
-    index is 100 divided by the values from the input list.
-    If division ever causes an error instead have the value be the type of error as a string.
-    Example the list [100,50,25,"5"] as an argument would return [1, 2, 4, "TypeError"]
-    :param divisors:
-    :return:
-    """
-    pass
+    while i < len(arr):
+        try:
+            if type(arr[i]) == int or type(arr[i]) == float:
+                x = x + arr[i]
+        except:
+            pass
+        i = i + 1
+
+    return total
 
 
-def upperAll(arr : list) -> None:
-    """
-    Modiy the function such that is uppercases all strings within the given argument list.
-    The string method .upper() turns all characters in as tirng uppercase.
-    You should mpdify the original list not return a new list.
-    :param arr:
-    :return:
-    """
-    x = "hello"
-    print(x)
-    x = x.upper()
-    print(x)
+def cleanData(rawData: list) -> list:
+    new = []
+    i = 0
+
+    while i < len(rawData):
+        try:
+            new.append(float(rawData[i]))
+        except:
+            pass
+        i += 1
+
+    return new
 
 
-def firstItems(arr : list) -> list:
-    """
-    Modify the function below such that given a list of values. Many of the list elements will be lists
-    themselves. For any list element that is a list grab the first element from that list. If the list
-    element is not a list then just grab the value itself.
-    Create a new list of all the first indexes of inner lists or just values themselves.
-    Example firstItems( [[1,2],[3,4],[5,6],[7,8]],9 ) == [1,3,5,7,9]
-    :param arr:
-    :return:
-    """
-    pass
+def unreliableCalculator(divisors: list) -> list:
+    results = []
+    for divisor in divisors:
+        try:
+            results.append(100 / divisor)
+        except ZeroDivisionError:
+            results.append(None)
 
+def upperAll(arr: list) -> None:
+    i = 0
+
+    while i < len(arr):
+        try:
+            arr[i] = arr[i].upper()
+        except:
+            pass
+        i = i + 1
+
+
+def firstItems(arr: list) -> list:
+    result = []
+    i = 0
+
+    while i < len(arr):
+        try:
+            result.append(arr[i][0])
+        except:
+            try:
+                result.append(arr[i])
+            except:
+                pass
+        i = i + 1
+
+    return result
+
+
+def test_sum():
+    assert sum([1,7,"hello", 8.5]) == 16.5
+    assert sum(["Cat", "dog","7"]) ==0
+    assert sum([1,2,3,4]) ==10
+
+
+def test_clean_data():
+    assert cleanData(["1", "7.5", "cat", "14.f"]) == [1.0,7.5]
+    assert cleanData(["1", "7.5", "cat", "14.6"]) == [1.0,7.5,14.6]
+
+
+def test_unreliable_calculator():
+    assert  unreliableCalculator([100,700,3,0,12,"Cat"])==[1.0, 0.14285714285714285, 33.333333333333336, 'ZeroDivisionError', 8.333333333333334, 'TypeError']
+
+
+def test_upper_all():
+    words = ["hello", "Class", 1, "good", "job"]
+    assert upperAll(words)==None
+    assert words==['HELLO', 'CLASS', 1, 'GOOD', 'JOB']
+
+
+def test_first_items():
+    assert firstItems([1,[7,5],["hello"], ["food","Hello"],8]) == [1,7,"hello","food",8]
+    assert firstItems([[1,2],[3,4],[5,6],[7,8]]) == [1,3,5,7]
